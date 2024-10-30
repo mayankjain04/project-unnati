@@ -1,5 +1,5 @@
-# SmartCity
-SmartCity is a collaborative web project created as part of our college minor project. The platform is designed to streamline urban management by focusing on traffic monitoring, garbage disposal, and medical assistance. We are continuously developing new features and improving the current functionality to enhance urban living through technology.
+# Project Unnati
+Unnati is a collaborative web project created as part of our bachelors pre-final year minor project. The platform is designed to streamline urban management by focusing on traffic monitoring, garbage disposal, Emergency Women Helpline and medical assistance. We are continuously developing new features and improving the current functionality to enhance urban living through technology.
 <br>
 
 ## Project Overview:

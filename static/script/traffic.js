@@ -1,98 +1,154 @@
-// get user location from localstorage
-let storedCoordinates = JSON.parse(localStorage.getItem('userCoordinates'));
+const apiKey = '3TWVpmzl3O8Auvj5ZH3SbJ8OmetgN7BiT185Q-AzaT0';
+const trafficInfo = document.getElementById('traffic-info');
+const addressForm = document.getElementById('addressform');
+const searchButton = document.getElementById('search-button');
+const radiusInput = document.getElementById('radius');
+const addressInput = document.getElementById('address');
 
-const scriptTag = document.querySelector('script[src*="traffic.js"]');
-const latitude = storedCoordinates.latitude
-const longitude = storedCoordinates.longitude
-const dataRadius = scriptTag.getAttribute('radius');
+let platform = new H.service.Platform({ apikey: apiKey });
+let defaultLayers = platform.createDefaultLayers();
+let map, circle, marker;
+
+// Check if location is stored in localStorage, otherwise set default to Berlin
+function getLocationFromLocalStorage() {
+    const storedLocation = localStorage.getItem('userLocation');
+    if (storedLocation) {
+        return JSON.parse(storedLocation);
+    } else {
+        return { lat: 23.863714, lng: 78.808649 }; // Makronia's coordinates as default
+    }
+}
+
+// Save location to localStorage
+function saveLocationToLocalStorage(lat, lng) {
+    const location = { lat, lng };
+    localStorage.setItem('userLocation', JSON.stringify(location));
+}
 
 // Initialize the map
-var map = L.map('map').setView([latitude, longitude], 13);
+function initializeMap(lat, lng, radius) {
+    if (map) map.dispose();
 
-// Set up the OpenStreetMap layer
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-}).addTo(map);
+    map = new H.Map(
+        document.getElementById('map'),
+        defaultLayers.vector.normal.map,
+        { center: { lat, lng }, zoom: 14 }
+    );
 
-// Add a circle to indicate the radius of the area
-var radius = dataRadius;
-L.circle([latitude, longitude], {
-    color: 'blue',
-    fillColor: '#blue',
-    fillOpacity: 0.1,
-    radius: radius
-}).addTo(map);
+    new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+    window.addEventListener('resize', () => map.getViewPort().resize());
 
-// Add a marker for the user's location
-L.marker([latitude, longitude]).addTo(map)
-    .bindPopup('You are here')
+    // Add marker and circle
+    marker = new H.map.Marker({ lat, lng });
+    circle = new H.map.Circle(
+        { lat, lng },
+        radius,
+        { style: { strokeColor: 'rgba(0, 0, 255, 0.5)', fillColor: 'rgba(0, 85, 170, 0.17)', lineWidth: 2 } }
+    );
 
-// Fetch and display traffic data
-// fetch(`https://data.traffic.hereapi.com/v7/flow?in=circle:${latitude},${longitude};r=1000&locationReferencing=shape&apiKey=3TWVpmzl3O8Auvj5ZH3SbJ8OmetgN7BiT185Q-AzaT0`)
-//     .then(response => response.json())
-//     .then(data => {
-//         // Access the traffic data from the 'Results' key
-//         const results = data.Results;
-//         if (results && results.length > 0) {
-//             const traffic_data = results[0];
-//         // Access the 'flows' key within the first element of 'Results'
-//             traffic_data.flows.forEach(flow => {
-//                 var coordinates = flow.coordinates;
-//                 var length = flow.length;
-//                 var routeName = flow.routeName;
-//                 var routeLength = flow.routeLength;
-//                 var jamFactor = flow.jamStatus;
-//                 // select color for polylines
-//                 var color = "grey";
-//                 var message = "Info Unavailable";
-//                 switch (true) {
-//                     case (jamFactor === 10):
-//                         color = "red";
-//                         message = "Closed";
-//                         break;
-//                     case (jamFactor < 3):
-//                         color = "green";
-//                         message = "Open";
-//                         break;
-//                     case (jamFactor < 6):
-//                         color = "#9ACD32";
-//                         message = "Slight Traffic";
-//                         break;
-//                     case (jamFactor < 8):
-//                         color = "yellow";
-//                         message = "Moderate Traffic";
-//                         break;
-//                     case (jamFactor < 10):
-//                         color = "orange";
-//                         message = "High Traffic";
-//                         break;
-//                 }
-//                 // at first only `Length: ${length} meters`, was added in tooltip
-//                 var polyline = L.polyline(coordinates, { color: color }).addTo(map);
-//                 polyline.bindTooltip(`${routeName}, ${routeLength} meters, ${message}`);
-//             });
-//             traffic_data.routeData.forEach(route => {
-//                 // Add additional data beside the map
-//                 var trafficInfo = document.getElementById('traffic-info');
-//                 var info = document.createElement('div');
-//                 const liveText = route.reliabilityFactor > 0.7 ? "LIVE" : "";
-//                 info.classList.add('traffic-info-entry');
-//                 let feedReliability = "";
-//                 if (typeof route.reliabilityFactor === 'number') {
-//                     feedReliability = `
-//                     <p>Feed Reliability: <span class="text-success">${route.reliabilityFactor * 100}% <span id="live">${liveText}</span></span></p>
-//                     `;
-//                 }
-//                 info.innerHTML = `
-//                 <p class="text-dark">Route Name: ${route.routeName}</p>
-//                 <p>Route Length: ${route.routeLength} meters</p>
-//                 <p>Status: <span class="text-success">${route.status}</span></p>
-//                 <p>Jam Status: <span class="text-success">${route.jamStatus * 10}%</span></p>
-//                 ${feedReliability}
-//                 <hr>
-//             `;
-//                 trafficInfo.appendChild(info);
-//             })
-//         }
-//     })
-// .catch(error => console.error('Error fetching traffic data:', error));
+    map.addObjects([marker, circle]);
+    map.getViewModel().setLookAtData({ bounds: circle.getBoundingBox() });
+}
+
+// Fetch traffic data
+function fetchTrafficData(lat, lng, radius) {
+    trafficInfo.innerHTML = ''; // Clear previous traffic data
+
+    fetch(`https://data.traffic.hereapi.com/v7/flow?in=circle:${lat},${lng};r=${radius}&locationReferencing=shape&apiKey=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            const results = data.results || [];
+            results.forEach(result => {
+                const jamFactor = result.currentFlow.jamFactor;
+                const routeName = result.location.description;
+
+                result.location.shape.links.forEach(link => {
+                    let color = 'grey';
+                    if (jamFactor < 3) color = 'green';
+                    else if (jamFactor < 6) color = '#9ACD32';
+                    else if (jamFactor < 8) color = 'yellow';
+                    else if (jamFactor < 10) color = 'orange';
+                    else if (jamFactor === 10) color = 'red';
+
+                    const lineString = new H.geo.LineString();
+                    link.points.forEach(point => lineString.pushPoint(point));
+
+                    const polyline = new H.map.Polyline(lineString, { style: { strokeColor: color } });
+                    map.addObject(polyline);
+                });
+
+                // Populate traffic information
+                var info = document.createElement('div');
+                const liveText = result.currentFlow.confidence > 0.7 ? "LIVE" : "";
+                info.classList.add('traffic-info-entry');
+                let feedReliability = result.currentFlow.confidence ? `
+                    <p>Feed Reliability: <span class="text-success">${result.currentFlow.confidence * 100}% <span id="live">${liveText}</span></span></p>
+                ` : '';
+                info.innerHTML = `
+                    <p class="text-dark">Route Name: ${routeName}</p>
+                    <p>Status: <span class="text-success">${result.currentFlow.traversability}</span></p>
+                    <p>Jam Status: <span class="text-success">${jamFactor * 10}%</span></p>
+                    ${feedReliability}
+                    <hr>
+                `;
+                trafficInfo.appendChild(info);
+            });
+        })
+        .catch(error => console.error('Error fetching traffic data:', error));
+}
+
+// Fetch coordinates for a new location using HERE Geocoding API
+function geocodeAddress(address, radius) {
+    fetch(`https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(address)}&apiKey=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.items.length > 0) {
+                const { lat, lng } = data.items[0].position;
+                initializeMap(lat, lng, radius);
+                fetchTrafficData(lat, lng, radius);
+            } else {
+                alert('Location not found. Please try again.');
+            }
+        })
+        .catch(error => console.error('Error fetching geocoding data:', error));
+}
+
+// Handle search button click
+searchButton.addEventListener('click', () => {
+    const address = addressInput.value.trim();
+    const radius = parseInt(radiusInput.value, 10);
+    if (address && radius) {
+        geocodeAddress(address, radius);
+    } else {
+        alert('Please enter a valid address and radius.');
+    }
+});
+
+// Ask for location permission on page load
+function askForLocationPermission() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                saveLocationToLocalStorage(latitude, longitude);
+                initializeMap(latitude, longitude, 1000); // Use the user's location with a default radius of 1000 meters
+                fetchTrafficData(latitude, longitude, 1000);
+            },
+            (error) => {
+                console.warn('Location access denied or failed', error);
+                const location = getLocationFromLocalStorage(); // Fallback to stored location
+                initializeMap(location.lat, location.lng, 1000);
+                fetchTrafficData(location.lat, location.lng, 1000);
+            }
+        );
+    } else {
+        const location = getLocationFromLocalStorage(); // Fallback to stored location
+        initializeMap(location.lat, location.lng, 1000);
+        fetchTrafficData(location.lat, location.lng, 1000);
+    }
+}
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', () => {
+    askForLocationPermission();
+});

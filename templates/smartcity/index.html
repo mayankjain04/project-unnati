@@ -14,7 +14,7 @@ Project Smartcity
   }
 
   .header {
-    background-color: #b3b3ff;
+    background-color: #9090ffac;
     /* blue header */
     color: #fff;
     padding: 20px;
@@ -59,7 +59,7 @@ Project Smartcity
 
   /* Add some colors to the boxes */
   .box:nth-child(1) {
-    background-color: #ffe6e6;
+    background-color: hsla(355, 100%, 85%, 0.943);
     /* light pink background for traffic monitoring */
   }
 
@@ -115,12 +115,12 @@ Project Smartcity
 
 {% block main %}
 <div class="header">
-  <h1>Smart City</h1>
+  <h1>Project Unnati</h1>
   <p>A comprehensive system for a smarter and more efficient city</p>
 </div>
 <div class="content">
-  <div class="d-flex flex-column">
-    <div class="d-flex flex-row">
+  <div class="d-flex flex-row">
+    <div class="d-flex">
       <a href="/traffic">
         <div class="box">
           <h2>Traffic Monitoring</h2>
@@ -145,7 +145,7 @@ Project Smartcity
     </div>
 
     <div class="d-flex flex-row">
-      <a href="{% url 'garbage-index' %}">
+      <!-- <a href="{% url 'garbage-index' %}">
         <div class="box">
           <h2>Garbage Disposal</h2>
           <p>The garbage disposal guide gives accurate and latest data on trash bins and garbage disposal facilities in
@@ -155,7 +155,7 @@ Project Smartcity
             src="https://img.freepik.com/premium-vector/garbage-collection-waste-recycling-transportation-city_313242-973.jpg?w=2000"
             alt="" width="250" height="150">
         </div>
-      </a>
+      </a> -->
 
       <a href="{% url 'ewh-index' %}">
         <div class="box">

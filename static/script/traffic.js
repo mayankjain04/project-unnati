@@ -4,6 +4,7 @@ const addressForm = document.getElementById('addressform');
 const searchButton = document.getElementById('search-button');
 const radiusInput = document.getElementById('radius');
 const addressInput = document.getElementById('address');
+const filterInput = document.getElementById('filterInput');  // New filter input
 
 let platform = new H.service.Platform({ apikey: apiKey });
 let defaultLayers = platform.createDefaultLayers();
@@ -93,6 +94,16 @@ function fetchTrafficData(lat, lng, radius) {
                 `;
                 trafficInfo.appendChild(info);
             });
+
+            // Add filtering functionality
+            filterInput.addEventListener('input', function() {
+                const filterText = filterInput.value.toLowerCase();
+                const entries = trafficInfo.getElementsByClassName('traffic-info-entry');
+                Array.from(entries).forEach(entry => {
+                    const routeName = entry.querySelector('.text-dark').textContent.toLowerCase();
+                    entry.style.display = routeName.includes(filterText) ? '' : 'none';
+                });
+            });
         })
         .catch(error => console.error('Error fetching traffic data:', error));
 }
@@ -131,24 +142,21 @@ function askForLocationPermission() {
             (position) => {
                 const { latitude, longitude } = position.coords;
                 saveLocationToLocalStorage(latitude, longitude);
-                initializeMap(latitude, longitude, 1000); // Use the user's location with a default radius of 1000 meters
+                initializeMap(latitude, longitude, 1000); // Use the user's location
                 fetchTrafficData(latitude, longitude, 1000);
             },
             (error) => {
-                console.warn('Location access denied or failed', error);
-                const location = getLocationFromLocalStorage(); // Fallback to stored location
-                initializeMap(location.lat, location.lng, 1000);
-                fetchTrafficData(location.lat, location.lng, 1000);
+                console.error('Geolocation error:', error);
+                alert('Unable to retrieve your location.');
             }
         );
     } else {
-        const location = getLocationFromLocalStorage(); // Fallback to stored location
-        initializeMap(location.lat, location.lng, 1000);
-        fetchTrafficData(location.lat, location.lng, 1000);
+        console.error('Geolocation is not supported by this browser.');
     }
 }
 
-// Initialize the app
-document.addEventListener('DOMContentLoaded', () => {
-    askForLocationPermission();
-});
+// Use the saved location or request location permission
+const userLocation = getLocationFromLocalStorage();
+initializeMap(userLocation.lat, userLocation.lng, 1000);
+fetchTrafficData(userLocation.lat, userLocation.lng, 1000);
+askForLocationPermission();

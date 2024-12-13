@@ -63,3 +63,33 @@ def profile(request):
 
 def support(request):
     return render(request, 'smartcity/support.html')
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Profile
+
+@login_required
+def profile_view(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+        # Handle updates based on the form submitted
+        if 'bio' in request.POST:
+            profile.bio = request.POST.get('bio', '')
+            profile.save()
+        elif 'hobbies' in request.POST:
+            profile.hobbies = request.POST.get('hobbies', '')
+            profile.save()
+        elif 'facebook' in request.POST or 'twitter' in request.POST or 'linkedin' in request.POST:
+            profile.facebook = request.POST.get('facebook', profile.facebook)
+            profile.twitter = request.POST.get('twitter', profile.twitter)
+            profile.linkedin = request.POST.get('linkedin', profile.linkedin)
+            profile.save()
+    return render(request, 'smartcity/profile.html', {'profile': profile})
+
+@login_required
+def upload_profile_picture(request):
+    if request.method == 'POST' and request.FILES['profilePic']:
+        profile = request.user.profile
+        profile.profile_picture = request.FILES['profilePic']
+        profile.save()
+    return redirect('profile')

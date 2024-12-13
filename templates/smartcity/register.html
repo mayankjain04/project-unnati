@@ -6,7 +6,7 @@ Log-in
 
 {% block main %}
 <div class="container-fluid text-center">
-    <form action="/register" class="borderless form-control mx-auto pt-5 p-4 w-auto"  method="post">
+    <form action="/register" class="bg-none borderless form-control mx-auto pt-5 p-4 w-auto"  method="post">
         {% csrf_token %}
         <div class="form-group py-2">
             <input required autofocus autocomplete="off" maxlength="20" class="form-control mx-auto w-auto" type="text" id="username" name="username" value="" placeholder="Username">

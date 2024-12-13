@@ -1,0 +1,137 @@
+{
+    "cities": [
+        {
+            "name": "Saugor",
+            "hospitals": [
+                {
+                    "name": "Sagar Hospital",
+                    "speciality": "General Medicine",
+                    "doctors": ["Dr. R.K. Sharma", "Dr. Meera Tiwari"],
+                    "contact": "07582-223344",
+                    "ambulanceAvailable": true,
+                    "bedsAvailable": true,
+                    "image": "https://via.placeholder.com/150?text=Sagar+Hospital"
+                },
+                {
+                    "name": "Dr. Rai Hospital",
+                    "speciality": "Orthopedics",
+                    "doctors": ["Dr. Anil Rai", "Dr. Kamlesh Verma"],
+                    "contact": "07582-334455",
+                    "ambulanceAvailable": false,
+                    "bedsAvailable": true,
+                    "image": "https://via.placeholder.com/150?text=Dr.+Rai+Hospital"
+                },
+                {
+                    "name": "Bansal Hospital",
+                    "speciality": "Cardiology",
+                    "doctors": ["Dr. Rajeev Bansal", "Dr. Sujata Mishra"],
+                    "contact": "07582-556677",
+                    "ambulanceAvailable": true,
+                    "bedsAvailable": false,
+                    "image": "https://via.placeholder.com/150?text=Bansal+Hospital"
+                },
+                {
+                    "name": "Narayan Hospital",
+                    "speciality": "Pediatrics",
+                    "doctors": ["Dr. Neha Gupta", "Dr. Alok Jain"],
+                    "contact": "07582-112233",
+                    "ambulanceAvailable": true,
+                    "bedsAvailable": true,
+                    "image": "https://via.placeholder.com/150?text=Narayan+Hospital"
+                }
+            ]
+        },
+        {
+            "name": "Delhi",
+            "hospitals": [
+                {
+                    "name": "AIIMS Hospital",
+                    "speciality": "Multi-Specialty",
+                    "doctors": ["Dr. Randeep Guleria", "Dr. Sunita Reddy"],
+                    "contact": "011-12345678",
+                    "ambulanceAvailable": true,
+                    "bedsAvailable": false,
+                    "image": "https://via.placeholder.com/150?text=AIIMS+Hospital"
+                },
+                {
+                    "name": "Fortis Hospital",
+                    "speciality": "Cardiology",
+                    "doctors": ["Dr. A.K. Seth", "Dr. Rachna Mehta"],
+                    "contact": "011-87654321",
+                    "ambulanceAvailable": false,
+                    "bedsAvailable": true,
+                    "image": "https://via.placeholder.com/150?text=Fortis+Hospital"
+                }
+            ]
+        },
+        {
+            "name": "Mumbai",
+            "hospitals": [
+                {
+                    "name": "Nanavati Hospital",
+                    "speciality": "Oncology",
+                    "doctors": ["Dr. Arjun Verma", "Dr. Smriti Jain"],
+                    "contact": "022-12345678",
+                    "ambulanceAvailable": true,
+                    "bedsAvailable": true,
+                    "image": "https://via.placeholder.com/150?text=Nanavati+Hospital"
+                },
+                {
+                    "name": "Kokilaben Hospital",
+                    "speciality": "Orthopedics",
+                    "doctors": ["Dr. Kiran Patil", "Dr. Sheela Deshmukh"],
+                    "contact": "022-98765432",
+                    "ambulanceAvailable": true,
+                    "bedsAvailable": false,
+                    "image": "https://via.placeholder.com/150?text=Kokilaben+Hospital"
+                }
+            ]
+        },
+        {
+            "name": "Bangalore",
+            "hospitals": [
+                {
+                    "name": "Manipal Hospital",
+                    "speciality": "Nephrology",
+                    "doctors": ["Dr. Vishal Kumar", "Dr. Divya Rao"],
+                    "contact": "080-12345678",
+                    "ambulanceAvailable": true,
+                    "bedsAvailable": false,
+                    "image": "https://via.placeholder.com/150?text=Manipal+Hospital"
+                },
+                {
+                    "name": "Narayana Hospital",
+                    "speciality": "Cardiology",
+                    "doctors": ["Dr. Devi Shetty", "Dr. Arjun Kumar"],
+                    "contact": "080-87654321",
+                    "ambulanceAvailable": false,
+                    "bedsAvailable": true,
+                    "image": "https://via.placeholder.com/150?text=Narayana+Hospital"
+                }
+            ]
+        },
+        {
+            "name": "Kolkata",
+            "hospitals": [
+                {
+                    "name": "Apollo Gleneagles Hospital",
+                    "speciality": "Neurology",
+                    "doctors": ["Dr. Anupam Sengupta", "Dr. Megha Das"],
+                    "contact": "033-12345678",
+                    "ambulanceAvailable": true,
+                    "bedsAvailable": true,
+                    "image": "https://via.placeholder.com/150?text=Apollo+Gleneagles"
+                },
+                {
+                    "name": "AMRI Hospital",
+                    "speciality": "Gastroenterology",
+                    "doctors": ["Dr. Subhashish Das", "Dr. Rina Gupta"],
+                    "contact": "033-87654321",
+                    "ambulanceAvailable": true,
+                    "bedsAvailable": false,
+                    "image": "https://via.placeholder.com/150?text=AMRI+Hospital"
+                }
+            ]
+        }
+    ]
+}

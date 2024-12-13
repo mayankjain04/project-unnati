@@ -31,68 +31,85 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <nav id="navbar" class="navbar navbar-expand-lg navbar-full navbar-dark fixed-top zerospace">
-            <div class="container-fluid zerospace">
-                <a class="navbar-brand zerospace" href="/">
-                    <!-- <img class="logo-img zerospace" src="{% static 'pictures/logo.png' %}" alt="Logo"> -->
-                </a>
-                <button class="navbar-toggler logo" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/documentation">Documentation</a>
-                        </li>
-                        <!-- <li class="nav-item">
+    <div class="background-container">
+        <div class="background-blur">
+        </div>
+    </div>
+    <div class="body-content">
+        <div class="wrapper">
+            <nav id="navbar" class="navbar navbar-expand-lg navbar-full navbar-dark fixed-top zerospace">
+                <div class="container-fluid zerospace">
+                    <a class="navbar-brand zerospace" href="/">
+                        <!-- <img class="logo-img zerospace" src="{% static 'pictures/logo.png' %}" alt="Logo"> -->
+                    </a>
+                    <button class="navbar-toggler logo" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/traffic">Traffic</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/hospitals">Medical Help</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/helpline">Women Helpline</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/documentation">Documentation</a>
+                            </li>
+                            <!-- <li class="nav-item">
                             <a class="nav-link active trigger-event" id="traffic-link" href="/traffic">Traffic</a>
                         </li> -->
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/support">Support</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <!-- <li class="nav-item">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/support">Support</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <!-- <li class="nav-item">
                             <form action="/show" class="d-flex">
                                 <input class="form-control me-2" type="search" placeholder="Your City">
                                 <button class="btn btn-outline-success" type="submit">Search</button>
                             </form>
                         </li> -->
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/login">Log In</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/logout">Log out</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/register">Register</a>
-                        </li>
-                        <li class="nav-item d-flex">
-                            <a id="profile-icon" class="nav-link" href="/profile">
-                                <i class="bi bi-person" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    title="Profile"></i>
-                            </a>
-                        </li>
-                    </ul>
+                            {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/logout">Log out</a>
+                            </li>
+                            <li class="nav-item d-flex">
+                                <a id="profile-icon" class="nav-link" href="/profile">
+                                    <i class="bi bi-person" data-bs-toggle="tooltip" data-bs-placement="right"
+                                        title="Profile"></i>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/login">Log In</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/register">Register</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            {% block main %}
+            {% endblock %}
+        </div>
+        <footer id="footjob">
+            <div class="container-fluid cc">
+                <div class="d-flex text-center align-items-center justify-content-center">
+                    <small class="cc">{% block footer %}{% endblock %} &#169 All rights reserved</small>
                 </div>
             </div>
-        </nav>
-        {% block main %}
-        {% endblock %}
+        </footer>
     </div>
-    <footer id="footjob">
-        <div class="container-fluid cc">
-            <div class="d-flex text-center align-items-center justify-content-center">
-                <small class="cc">{% block footer %}{% endblock %} &#169 All rights reserved</small>
-            </div>
-        </div>
-    </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

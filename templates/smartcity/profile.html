@@ -1,7 +1,24 @@
 {% extends "smartcity/layout.html" %}
-
+{% load static %}
 {% block script %}
-
+<script>
+    function toggleEditFields() {
+        const editForms = document.querySelectorAll('.edit-form');
+        const updateBtn = document.getElementById('update-btn');
+        
+        // Toggle the visibility of update fields
+        editForms.forEach(form => {
+            form.classList.toggle('d-none');
+        });
+        
+        // Change button text based on visibility
+        if (updateBtn.innerText === 'Update Profile') {
+            updateBtn.innerText = 'Hide Update Fields';
+        } else {
+            updateBtn.innerText = 'Update Profile';
+        }
+    }
+</script>
 {% endblock %}
 
 {% block title %}
@@ -9,44 +26,82 @@ Profile
 {% endblock %}
 
 {% block main %}
-<div class="container-fluid text-center">
-    <h1 class="header text-success">Profile: Anonymous</h1>
-</div>
-{% if True %}
-<form action="/profile" style="border: 0;" id="NameChange" method="post" class="form-control w-auto mx-auto mt-3 p-2">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="d-flex col-auto align-items-center">
-                <label for="username">Change username:</label>
-            </div>
-            <div class="d-flex col-auto align-items-center">
-                <input required autocomplete="off" maxlength="20" class="form-control" type="text" id="NewName"
-                    name="NewName" value="" placeholder="Username">
-            </div>
-            <div class="d-flex py-3 col-auto align-items-center">
-                <button type="submit" class="btn btn-primary">Update</button>
-            </div>
+<div class="container profile-container mt-5">
+    <div class="row">
+        <!-- Profile Picture Section -->
+        <div class="col-md-3 text-center">
+            <!-- Check if the user has a profile picture -->
+            <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'images/default-profile.png' %}{% endif %}" alt="Profile Picture" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
+            <form action="/profile/upload-pic" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="profilePic" class="form-label">Upload New Picture</label>
+                <input type="file" id="profilePic" name="profilePic" class="form-control mb-2">
+                <button type="submit" class="btn btn-success">Upload</button>
+            </form>
         </div>
-    </div>
-</form>
 
-<form action="/profile" style="border: 0;" id="NameChange" method="post" class="form-control w-auto mx-auto mt-3 p-2">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="d-flex col-auto align-items-center">
-                <label for="password">Change Password:</label>
+        <!-- Profile Details Section -->
+        <div class="col-md-9">
+            <h1 class="text-primary">Profile: {{ user.username }}</h1>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
+
+            <button id="update-btn" class="btn btn-warning mb-3" onclick="toggleEditFields()">Update Profile</button>
+
+            <div class="edit-form d-none">
+                <form action="/profile/update" method="post">
+                    {% csrf_token %}
+                    <label for="bio" class="form-label">Update Bio:</label>
+                    <textarea id="bio" name="bio" class="form-control mb-2" rows="3">{{ user.profile.bio }}</textarea>
+                    <button type="submit" class="btn btn-primary">Update Bio</button>
+                </form>
             </div>
-            <div class="d-flex col-auto align-items-center">
-                <input required autocomplete="off" minlength="6" class="form-control" type="password" id="NewPass"
-                    name="NewPass" value="" placeholder="Password">
-            </div>
-            <div class="d-flex py-3 col-auto align-items-center">
-                <button type="submit" class="btn btn-primary">Update</button>
+
+            <hr>
+
+            <h3>Social Links</h3>
+            <ul>
+                <li><strong>Facebook:</strong> <a href="{{ user.profile.facebook }}" target="_blank">{{ user.profile.facebook }}</a></li>
+                <li><strong>Twitter:</strong> <a href="{{ user.profile.twitter }}" target="_blank">{{ user.profile.twitter }}</a></li>
+                <li><strong>LinkedIn:</strong> <a href="{{ user.profile.linkedin }}" target="_blank">{{ user.profile.linkedin }}</a></li>
+            </ul>
+
+            <div class="edit-form d-none">
+                <form action="/profile/update" method="post">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        <label for="facebook" class="form-label">Facebook:</label>
+                        <input type="url" id="facebook" name="facebook" class="form-control" value="{{ user.profile.facebook }}">
+                    </div>
+                    <div class="mb-2">
+                        <label for="twitter" class="form-label">Twitter:</label>
+                        <input type="url" id="twitter" name="twitter" class="form-control" value="{{ user.profile.twitter }}">
+                    </div>
+                    <div class="mb-2">
+                        <label for="linkedin" class="form-label">LinkedIn:</label>
+                        <input type="url" id="linkedin" name="linkedin" class="form-control" value="{{ user.profile.linkedin }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Links</button>
+                </form>
             </div>
         </div>
     </div>
-</form>
-{% else %}
-user not logged in
-{% endif %}
+
+    <hr>
+
+    <!-- Additional Details Section -->
+    <div class="mt-4">
+        <h2 class="text-success">Additional Information</h2>
+        <p><strong>Hobbies:</strong> {{ user.profile.hobbies }}</p>
+
+        <div class="edit-form d-none">
+            <form action="/profile/update" method="post">
+                {% csrf_token %}
+                <label for="hobbies" class="form-label">Update Hobbies:</label>
+                <input type="text" id="hobbies" name="hobbies" class="form-control mb-2" value="{{ user.profile.hobbies }}">
+                <button type="submit" class="btn btn-primary">Update Hobbies</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

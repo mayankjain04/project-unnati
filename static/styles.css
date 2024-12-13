@@ -5,6 +5,22 @@
     padding-top: 0;
 }
 
+.profile-container {
+    background-color: #ffffff53;
+}
+
+.bg-none {
+    background-color: transparent;
+}
+
+.bg-fade {
+    background-color: #ffffffe3;
+}
+
+.test {
+    color: rgb(255, 255, 0)
+}
+
 .logo-img {
     max-width: 170px; 
     height: auto;
@@ -20,6 +36,15 @@
     height: 56px;
 }
 
+#footjob {
+    position: fixed; /* Fix the footer at the bottom */
+    bottom: 0; /* Set the distance from the bottom to 0 */
+    left: 0; /* Align to the left of the screen */
+    width: 100%; /* Ensure it spans the full width of the screen */
+    color: white; /* White text color */
+    text-align: center; /* Center the text in the footer */
+    z-index: 1; /* Ensure the footer is above the background image */
+}
 
 .fixed-top {
     position: fixed;
@@ -76,10 +101,11 @@
 
 body {
     padding-top: 56px;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    /* width: 100%; */
+    /* height: 100%; */
     padding-bottom: 5px;
 }
 .wrapper {
@@ -118,3 +144,54 @@ html {
 a {
     text-decoration: none;
   }
+
+  /* Background Image Styling */
+.background-image-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url('https://wallpapers.com/images/featured-full/full-hd-background-vjzgi9qrproc2upa.jpg'); /* Change this path to your image */
+    background-size: auto;
+    background-position: center top;
+    background-repeat: repeat;
+    filter: blur(8px);
+    z-index: -1; /* Ensure the background stays behind the content */
+}
+
+/* Fade overlay */
+.background-image-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.181); /* White overlay with some transparency */
+    z-index: -1; /* Place the overlay above the image, but below content */
+}
+
+
+.background-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;   
+}
+.background-blur {
+    width: 100vw;
+    height: 100vh;
+    background-image: url("https://www.scnsoft.com/iot-for-smart-city-merged.png");
+    /* background-image: url("https://picsum.photos/1920/1080?random=1"); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
+    /* filter: blur(1px); */
+}
+
+.body-content{
+    position: relative;
+    z-index: 3;
+}

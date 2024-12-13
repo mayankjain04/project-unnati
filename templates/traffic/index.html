@@ -84,8 +84,12 @@ Project Vision
     <div class="container-fluid pb-2">
         <div class="row align-items-center justify-content-center">
             <div class="d-flex col col-md-6 col-12" id="map"></div>
-            <div id="traffic-data">
-                <h4 id="other_routes" class="text-center">Nearby Routes</h4> <br>
+            <div id="traffic-data" class="bg-fade">
+                <h4 id="other_routes" class="text-center bg-blue">Nearby Routes</h4> <br>
+                <!-- Added a search input field for filtering routes -->
+                <div class="px-3 pt-3 w-auto col col-md-6 col-auto">
+                    <input id="filterInput" class="form-control bg-fade" type="text" placeholder="Filter routes by name" />
+                </div>
                 <div id="traffic-info" class="col col-md-6 col-auto ps-3 pt-3">
                 </div>
             </div>
@@ -93,7 +97,7 @@ Project Vision
     </div>
     <br>
     <div class="container-fluid d-flex align-items-center justify-content-center">
-        <form id="addressform" class="form-control w-auto pt-3 p-2 borderless">
+        <form id="addressform" class="bg-none form-control w-auto pt-3 p-2 borderless">
             <div class="container">
                 <h4 class="row align-items-center justify-content-center">Search for other Areas</h4>
                 <div class="row align-items-center justify-content-center pb-2">
